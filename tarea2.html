@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lenguajes de Diseño y Programación – Tarea 02</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Raleway:wght@300;400;500;600;700&family=Dancing+Script:wght@600&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose-light:   #fce4ec;
+      --rose-mid:     #f48fb1;
+      --rose-deep:    #e91e8c;
+      --lilac:        #c5a3e8;
+      --lilac-light:  #ede0ff;
+      --lilac-deep:   #9c6bc4;
+      --white:        #ffffff;
+      --ink:          #1a1a2e;
+      --ink-soft:     #4a4a6a;
+      /* Hero: verde oscuro código */
+      --hero-dark:    #0a1628;
+      --hero-mid:     #0f2540;
+      --code-green:   #00ff88;
+      --code-blue:    #61dafb;
+      --code-orange:  #ffb347;
+      --code-pink:    #ff79c6;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: #f5f0fb;
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ═══ BOTÓN VOLVER ═══ */
+    .back-btn {
+      position: fixed;
+      top: 22px; left: 22px;
+      z-index: 100;
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px 10px 14px;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255,255,255,.3);
+      border-radius: 30px;
+      color: white;
+      font-family: 'Raleway', sans-serif;
+      font-size: .82rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      text-decoration: none;
+      transition: all .25s;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+      cursor: pointer;
+    }
+    .back-btn:hover { background: rgba(255,255,255,.28); transform: translateX(-3px); }
+    .back-btn svg { flex-shrink: 0; transition: transform .25s; }
+    .back-btn:hover svg { transform: translateX(-3px); }
+
+    /* ═══ HERO ═══ */
+    .hero {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 10% 40%, rgba(0,255,136,.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 20%, rgba(97,218,251,.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 85%, rgba(233,30,140,.15) 0%, transparent 50%),
+        linear-gradient(160deg, #0a1628 0%, #0f2540 50%, #0a1628 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Terminal de fondo animada */
+    .hero-terminal {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: .07;
+    }
+    .term-line {
+      font-family: 'Fira Code', monospace;
+      font-size: .75rem;
+      color: var(--code-green);
+      white-space: nowrap;
+      animation: scroll-code 18s linear infinite;
+      position: absolute;
+      left: 0; right: 0;
+    }
+    @keyframes scroll-code {
+      from { transform: translateX(100%); }
+      to   { transform: translateX(-120%); }
+    }
+
+    /* Partículas flotantes */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: float-p 7s ease-in-out infinite;
+    }
+    .p1{width:60px;height:60px;top:15%;left:7%;background:rgba(0,255,136,.1);animation-delay:0s;}
+    .p2{width:40px;height:40px;top:70%;left:4%;background:rgba(97,218,251,.1);animation-delay:2s;}
+    .p3{width:80px;height:80px;top:20%;right:6%;background:rgba(255,179,71,.08);animation-delay:1s;}
+    .p4{width:50px;height:50px;bottom:15%;right:10%;background:rgba(255,121,198,.1);animation-delay:3s;}
+    @keyframes float-p {
+      0%,100%{transform:translateY(0) rotate(0deg);}
+      50%{transform:translateY(-20px) rotate(10deg);}
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 18px;
+      border: 1px solid rgba(0,255,136,.35);
+      border-radius: 30px;
+      font-size: .7rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--code-green);
+      margin-bottom: 24px;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-badge::before {
+      content:''; width:6px; height:6px; border-radius:50%;
+      background:var(--code-green);
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+    .hero-eyebrow {
+      font-family: 'Fira Code', monospace;
+      font-size: .85rem;
+      color: var(--code-blue);
+      letter-spacing: .12em;
+      margin-bottom: 16px;
+      animation: fadeUp .8s .1s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1;
+      color: white;
+      margin-bottom: 8px;
+      animation: fadeUp .8s .2s ease both;
+    }
+    .hero-title .accent { color: var(--code-green); }
+    .hero-title .accent2 { color: var(--code-pink); }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(.95rem, 2vw, 1.3rem);
+      color: rgba(255,255,255,.5);
+      max-width: 560px;
+      margin: 18px auto 36px;
+      line-height: 1.6;
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    /* Tabs de navegación de categorías */
+    .hero-tabs {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp .8s .4s ease both;
+    }
+    .hero-tab {
+      padding: 8px 22px;
+      border-radius: 30px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+      border: 1.5px solid;
+      cursor: pointer; text-decoration: none;
+      transition: all .25s;
+    }
+    .hero-tab.web   { border-color: var(--code-blue);   color: var(--code-blue);   }
+    .hero-tab.desk  { border-color: var(--code-orange); color: var(--code-orange); }
+    .hero-tab.design{ border-color: var(--code-pink);   color: var(--code-pink);   }
+    .hero-tab.web:hover   { background: rgba(97,218,251,.15); transform: translateY(-2px); }
+    .hero-tab.desk:hover  { background: rgba(255,179,71,.15);  transform: translateY(-2px); }
+    .hero-tab.design:hover{ background: rgba(255,121,198,.15); transform: translateY(-2px); }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .scroll-hint span { font-size:.65rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(255,255,255,.25); }
+    .scroll-line { width:1px; height:36px; background:linear-gradient(to bottom, rgba(0,255,136,.5), transparent); animation: scrollDown 1.5s ease-in-out infinite; }
+    @keyframes scrollDown {
+      0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}
+      51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}
+    }
+
+    /* Decorativo código fondo inferior */
+    .hero-bg-code {
+      position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+      font-family: 'Fira Code', monospace;
+      font-size: clamp(4rem,12vw,9rem); font-weight: 600;
+      color: rgba(0,255,136,.04);
+      white-space: nowrap; user-select: none;
+      letter-spacing: .05em;
+    }
+
+    @keyframes fadeUp {
+      from{opacity:0;transform:translateY(22px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    /* ═══ CONTENIDO ═══ */
+    .content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 70px 24px 100px;
+    }
+
+    /* Intro bloque */
+    .intro-block {
+      background: linear-gradient(135deg, var(--hero-dark), var(--hero-mid));
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 60px;
+      position: relative; overflow: hidden;
+    }
+    .intro-block::before {
+      content:'</>'; font-family:'Fira Code',monospace;
+      font-size:8rem; color:rgba(0,255,136,.06);
+      position:absolute; bottom:-20px; right:20px; line-height:1;
+    }
+    .intro-block p {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.05rem,2vw,1.25rem);
+      font-style:italic;
+      color:rgba(255,255,255,.85);
+      line-height:1.75; position:relative;
+    }
+    .intro-block .intro-author {
+      font-family:'Raleway',sans-serif; font-style:normal;
+      font-size:.78rem; font-weight:700; letter-spacing:.12em;
+      color:var(--code-green); margin-top:16px; display:block;
+    }
+
+    /* Separador de categoría */
+    .cat-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 36px; margin-top: 70px;
+    }
+    .cat-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .cat-header h2 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.6rem,3.5vw,2.2rem);
+      color:var(--ink);
+    }
+    .cat-header::after {
+      content:''; flex:1; height:2px;
+      border-radius:2px;
+    }
+    .cat-web   .cat-dot { background:var(--code-blue); }
+    .cat-web   .cat-header::after,
+    .cat-web   h2 span { color:var(--code-blue); }
+    .cat-desk  .cat-dot { background:var(--code-orange); }
+    .cat-design .cat-dot { background:var(--code-pink); }
+
+    .cat-desc {
+      font-size:.95rem; color:var(--ink-soft); line-height:1.8;
+      margin-bottom:36px; max-width:780px;
+    }
+
+    /* ── TARJETA DE LENGUAJE ── */
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 28px;
+      margin-bottom: 10px;
+    }
+
+    .lang-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(156,107,196,.13);
+      display: flex; flex-direction: column;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .lang-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(156,107,196,.22);
+    }
+
+    /* Banner ilustrativo del lenguaje */
+    .lang-banner {
+      height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; flex-shrink: 0;
+    }
+    .lang-banner svg { position: relative; z-index: 1; }
+    .lang-banner .lang-name-bg {
+      position: absolute;
+      font-family:'Fira Code',monospace;
+      font-size:5.5rem; font-weight:700;
+      opacity:.06; white-space:nowrap;
+      color:white; bottom:-10px; right:10px;
+      user-select:none;
+    }
+
+    /* Cuerpo de la card */
+    .lang-body { padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+    .lang-header { display: flex; align-items: center; gap: 12px; }
+    .lang-icon-wrap {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .lang-header-text h3 {
+      font-family:'Playfair Display',serif;
+      font-size:1.1rem; color:var(--ink);
+    }
+    .lang-header-text .lang-type {
+      font-size:.68rem; font-weight:700; letter-spacing:.18em;
+      text-transform:uppercase; color:var(--ink-soft);
+    }
+
+    .lang-desc {
+      font-size:.83rem; color:var(--ink-soft);
+      line-height:1.65; flex:1;
+    }
+
+    /* Bloque de código */
+    .code-block {
+      background: #1e1e2e;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .code-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px;
+      background: #16162a;
+    }
+    .code-dot { width:10px; height:10px; border-radius:50%; }
+    .code-dot.r{background:#ff5f57;} .code-dot.y{background:#febc2e;} .code-dot.g{background:#28c840;}
+    .code-fname {
+      margin-left:4px;
+      font-family:'Fira Code',monospace;
+      font-size:.7rem; color:rgba(255,255,255,.35);
+    }
+    pre {
+      padding: 14px 16px;
+      font-family: 'Fira Code', monospace;
+      font-size: .78rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      color: #cdd6f4;
+      white-space: pre;
+    }
+    /* Colores de sintaxis */
+    .kw  { color: #cba6f7; }   /* keyword */
+    .fn  { color: #89b4fa; }   /* function/tag */
+    .str { color: #a6e3a1; }   /* string */
+    .cm  { color: #6c7086; font-style:italic; } /* comment */
+    .num { color: #fab387; }   /* number */
+    .prop{ color: #89dceb; }   /* property */
+    .sel { color: #f38ba8; }   /* selector */
+    .val { color: #a6e3a1; }   /* value */
+    .atr { color: #f9e2af; }   /* attribute */
+    .pun { color: #cdd6f4; }   /* punctuation */
+
+    /* Badges de uso */
+    .lang-tags {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;
+    }
+    .tag {
+      font-size:.68rem; font-weight:700; letter-spacing:.08em;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--lilac-light); color: var(--lilac-deep);
+    }
+
+    /* Sección resumen al final */
+    .summary-box {
+      background: linear-gradient(135deg, var(--hero-dark), var(--hero-mid));
+      border-radius: 20px; padding: 40px;
+      color: white; margin-top: 70px;
+    }
+    .summary-box h3 {
+      font-family:'Playfair Display',serif;
+      font-size:1.6rem; color:var(--code-green); margin-bottom:18px;
+    }
+    .summary-box p {
+      font-size:.95rem; line-height:1.8;
+      color:rgba(255,255,255,.78); margin-bottom:12px;
+    }
+    .summary-box p:last-child { margin-bottom:0; }
+
+    /* Tabla comparativa */
+    .compare-table {
+      width:100%; border-collapse:collapse;
+      margin-top:10px; font-size:.83rem;
+    }
+    .compare-table th {
+      background: rgba(255,255,255,.07);
+      padding: 10px 14px;
+      text-align:left; font-weight:700;
+      color:var(--code-green); letter-spacing:.08em;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .compare-table td {
+      padding: 10px 14px;
+      color:rgba(255,255,255,.75);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      vertical-align:top;
+    }
+    .compare-table tr:last-child td { border-bottom:none; }
+    .compare-table tr:hover td { background:rgba(255,255,255,.04); }
+
+    /* Divider */
+    .divider {
+      display:flex; align-items:center; gap:14px;
+      margin:60px 0 0;
+      color:var(--lilac); font-size:.7rem; letter-spacing:.3em; text-transform:uppercase;
+    }
+    .divider::before,.divider::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(90deg,transparent,var(--lilac),transparent);
+    }
+
+    /* FOOTER */
+    footer {
+      background:linear-gradient(135deg,#2d1b4e,#4a1942);
+      color:rgba(255,255,255,.85);
+      padding:40px 24px 24px; text-align:center;
+    }
+    .footer-brand {
+      font-family:'Playfair Display',serif;
+      font-size:1.2rem; color:var(--rose-mid); margin-bottom:14px;
+    }
+    .footer-grid {
+      display:flex; justify-content:center; flex-wrap:wrap;
+      gap:30px; max-width:700px; margin:0 auto 20px;
+    }
+    .footer-item { display:flex; flex-direction:column; gap:3px; align-items:center; }
+    .fi-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose-mid); font-weight:700; }
+    .fi-value { font-size:.88rem; font-weight:600; color:white; }
+    .footer-divider { width:50px; height:2px; background:linear-gradient(90deg,var(--rose-mid),var(--lilac)); margin:0 auto 16px; border-radius:2px; }
+    .footer-copy { font-size:.72rem; color:rgba(255,255,255,.3); }
+
+    @media(max-width:600px){
+      .back-btn span{display:none;}
+      .intro-block{padding:26px 24px;}
+      .summary-box{padding:28px 20px;}
+      .compare-table{font-size:.75rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- BOTÓN VOLVER -->
+<a class="back-btn" href="index.html" onclick="history.back();return false;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  <span>Volver al portafolio</span>
+</a>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="hero-terminal">
+    <div class="term-line" style="top:12%;animation-delay:0s">const web = ['HTML','CSS','JavaScript','Python','PHP','TypeScript'] // lenguajes de la web moderna</div>
+    <div class="term-line" style="top:28%;animation-delay:4s;animation-duration:22s">function diseñar(idea) { return codigo + creatividad + logica } &lt;div class="mundo"&gt;Hola Web&lt;/div&gt;</div>
+    <div class="term-line" style="top:48%;animation-delay:8s;animation-duration:20s">body { font-family: 'Futuro'; color: #ideas; background: gradient(inspiración) } // CSS es arte</div>
+    <div class="term-line" style="top:65%;animation-delay:2s;animation-duration:25s">print("La programación es el lenguaje del siglo XXI") — class Robot extends IA { learn() {} }</div>
+    <div class="term-line" style="top:80%;animation-delay:6s;animation-duration:19s">SELECT conocimiento FROM cultura_digital WHERE materia = 'IA' AND alumna = 'Perla De Coss'</div>
+  </div>
+
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+
+  <div class="hero-badge">Tarea 02 · Cultura Digital 2</div>
+  <div class="hero-eyebrow">// Sintaxis · Estructura · Creatividad</div>
+  <h1 class="hero-title">
+    Lenguajes de<br>
+    <span class="accent">Diseño</span> &amp;
+    <span class="accent2">Programación</span>
+  </h1>
+  <p class="hero-subtitle">
+    Los idiomas con los que los desarrolladores y diseñadores construyen el mundo digital.
+  </p>
+  <div class="hero-tabs">
+    <a href="#web"    class="hero-tab web">🌐 Desarrollo Web</a>
+    <a href="#desk"   class="hero-tab desk">🖥️ Escritorio</a>
+    <a href="#design" class="hero-tab design">🎨 Diseño y Maquetación</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+  <div class="hero-bg-code">&lt;code/&gt;</div>
+</header>
+
+<!-- ═══ CONTENIDO ═══ -->
+<main class="content">
+
+  <div class="intro-block">
+    <p>
+      Un <strong style="color:var(--code-green)">lenguaje de programación</strong> es el conjunto de reglas, símbolos y sintaxis que usamos para dar instrucciones a una computadora. Así como los humanos hablamos español, inglés o francés, las máquinas "entienden" Python, JavaScript, o C++. En Cultura Digital aprendemos estos lenguajes para comprender cómo se construye todo lo que usamos en internet y en nuestros dispositivos.
+    </p>
+    <span class="intro-author">✦ Por Perla De Coss · Cultura Digital 2 · CBTIS 144</span>
+  </div>
+
+  <!-- ══════════════════════════════
+       SECCIÓN 1: DESARROLLO WEB
+  ══════════════════════════════ -->
+  <div id="web">
+    <div class="cat-header cat-web">
+      <div class="cat-dot" style="background:#61dafb"></div>
+      <h2>🌐 Lenguajes de <span style="color:#61dafb">Desarrollo Web</span></h2>
+    </div>
+    <p class="cat-desc">
+      Son los lenguajes usados para construir sitios y aplicaciones web. Se dividen en <strong>front-end</strong> (lo que el usuario ve) y <strong>back-end</strong> (el servidor y la lógica de negocio). Todo lo que ves en tu navegador fue escrito con alguno de estos lenguajes.
+    </p>
+
+    <div class="lang-grid">
+
+      <!-- HTML -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#e44d26,#f16529);">
+          <svg width="80" height="80" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M107.6 471l-33-370.7h362.8l-33 370.6L255.7 512z" fill="#e44d26"/>
+            <path d="M256 480.5l120.1-33.3 28.2-316.3H256z" fill="#f16529"/>
+            <path d="M256 268.9h-58.3l-4-45.4H256v-44.4H150.5l1 11.4 10.5 117.2H256zm0 122.2l-.2.1-49-13.3-3.1-35.2h-44.5l6.2 69.2 90.3 25.1.3-.1z" fill="#ebebeb"/>
+            <path d="M256 268.9v44.4h54.3l-5.1 57.2-49.2 13.3v46.1l90.3-25.1 6.6-74.4 6.9-61.5zm0-134.8v44.4h108.8l.9-10.2 2-22.8 1-11.4z" fill="#fff"/>
+          </svg>
+          <span class="lang-name-bg">HTML</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#fff3ef;">
+              <svg width="26" height="26" viewBox="0 0 512 512"><path d="M107.6 471l-33-370.7h362.8l-33 370.6L255.7 512z" fill="#e44d26"/><path d="M256 480.5l120.1-33.3 28.2-316.3H256z" fill="#f16529"/><path d="M256 268.9h-58.3l-4-45.4H256v-44.4H150.5l1 11.4 10.5 117.2H256zm0 122.2l-.2.1-49-13.3-3.1-35.2h-44.5l6.2 69.2 90.3 25.1.3-.1z" fill="#ebebeb"/><path d="M256 268.9v44.4h54.3l-5.1 57.2-49.2 13.3v46.1l90.3-25.1 6.6-74.4 6.9-61.5zm0-134.8v44.4h108.8l.9-10.2 2-22.8 1-11.4z" fill="#fff"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>HTML 5</h3>
+              <div class="lang-type">HyperText Markup Language</div>
+            </div>
+          </div>
+          <p class="lang-desc">Es el esqueleto de toda página web. Define la estructura y el contenido: títulos, párrafos, imágenes, enlaces y formularios. No es un lenguaje de programación, sino de marcado.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">index.html</span>
+            </div>
+            <pre><span class="cm">&lt;!-- Estructura básica HTML --&gt;</span>
+<span class="fn">&lt;!DOCTYPE</span> <span class="atr">html</span><span class="fn">&gt;</span>
+<span class="fn">&lt;html</span> <span class="atr">lang</span>=<span class="str">"es"</span><span class="fn">&gt;</span>
+  <span class="fn">&lt;head&gt;</span>
+    <span class="fn">&lt;title&gt;</span>Mi Primera Página<span class="fn">&lt;/title&gt;</span>
+  <span class="fn">&lt;/head&gt;</span>
+  <span class="fn">&lt;body&gt;</span>
+    <span class="fn">&lt;h1&gt;</span>¡Hola Mundo!<span class="fn">&lt;/h1&gt;</span>
+    <span class="fn">&lt;p&gt;</span>Aprendo <span class="fn">&lt;strong&gt;</span>HTML<span class="fn">&lt;/strong&gt;</span> 🚀<span class="fn">&lt;/p&gt;</span>
+  <span class="fn">&lt;/body&gt;</span>
+<span class="fn">&lt;/html&gt;</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Front-end</span><span class="tag">Estructura</span><span class="tag">Web</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#264de4,#2965f1);">
+          <svg width="80" height="80" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M107.6 471l-33-370.7h362.8l-33 370.6L255.7 512z" fill="#264de4"/>
+            <path d="M256 480.5l120.1-33.3 28.2-316.3H256z" fill="#2965f1"/>
+            <path d="M256 313.3v-44.4h-58l3.8 44.4zm-60.5-89.6l3.8 44.8H256v-44.8zm68.8 222.8v-46.1l-.3.1-49-13.3-3.1-35.2h-44.5l6.2 69.2 90.3 25.1zm.9-134.7h54.3l-5.5 61.6-48.8 13.2v46.2l90.3-25.1 6.6-74.4 6.9-78.1H264.5zm5.3-133.2H195l1 11.4 2 22.4h107.7l-2-22.4z" fill="#ebebeb"/>
+            <path d="M264.5 268.9v44.4h50.5l-4.8 53.6-45.7 12.3v46.2l90.3-25 .6-6.8 10-112.4 1-11.4h-11.4zm8.3-89.5l-.8-8.6h-12.1V215h110.3l-1-10.2-9.8-103.4H256v44.8h71.3z" fill="#fff"/>
+          </svg>
+          <span class="lang-name-bg">CSS</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#eef0ff;">
+              <svg width="26" height="26" viewBox="0 0 512 512"><path d="M107.6 471l-33-370.7h362.8l-33 370.6L255.7 512z" fill="#264de4"/><path d="M256 480.5l120.1-33.3 28.2-316.3H256z" fill="#2965f1"/><path d="M256 313.3v-44.4h-58l3.8 44.4zm-60.5-89.6l3.8 44.8H256v-44.8zm68.8 222.8v-46.1l-.3.1-49-13.3-3.1-35.2h-44.5l6.2 69.2 90.3 25.1zm.9-134.7h54.3l-5.5 61.6-48.8 13.2v46.2l90.3-25.1 6.6-74.4 6.9-78.1H264.5zm5.3-133.2H195l1 11.4 2 22.4h107.7l-2-22.4z" fill="#ebebeb"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>CSS 3</h3>
+              <div class="lang-type">Cascading Style Sheets</div>
+            </div>
+          </div>
+          <p class="lang-desc">Le da estilo y apariencia al HTML. Con CSS controlamos colores, fuentes, tamaños, animaciones y el diseño general de la página. Es el "maquillaje" de la web.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">estilos.css</span>
+            </div>
+            <pre><span class="cm">/* Estilos para el cuerpo */</span>
+<span class="sel">body</span> <span class="pun">{</span>
+  <span class="prop">background</span>: <span class="fn">linear-gradient</span>(<span class="num">135deg</span>,
+    <span class="val">#fce4ec</span>, <span class="val">#ede0ff</span>);
+  <span class="prop">font-family</span>: <span class="str">'Raleway'</span>, sans-serif;
+  <span class="prop">color</span>: <span class="val">#1a1a2e</span>;
+<span class="pun">}</span>
+
+<span class="sel">h1</span> <span class="pun">{</span>
+  <span class="prop">font-size</span>: <span class="num">2.5rem</span>;
+  <span class="prop">color</span>: <span class="val">#e91e8c</span>;
+  <span class="prop">animation</span>: fadeIn <span class="num">.8s</span> ease;
+<span class="pun">}</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Front-end</span><span class="tag">Estilos</span><span class="tag">Animaciones</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- JavaScript -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#323330,#f7df1e);">
+          <svg width="80" height="80" viewBox="0 0 630 630" xmlns="http://www.w3.org/2000/svg">
+            <rect width="630" height="630" fill="#f7df1e"/>
+            <path d="M423.2 492.19c12.69 20.72 29.2 35.95 58.4 35.95 24.53 0 40.2-12.26 40.2-29.2 0-20.3-16.1-27.49-43.1-39.3l-14.8-6.35c-42.72-18.2-71.1-41-71.1-89.2 0-44.4 33.83-78.2 86.7-78.2 37.64 0 64.7 13.1 84.2 47.4l-46.1 29.6c-10.15-18.2-21.1-25.37-38.1-25.37-17.34 0-28.33 11-28.33 25.37 0 17.76 11 24.95 36.4 35.95l14.8 6.34c50.3 21.57 78.7 43.56 78.7 93 0 53.3-41.87 82.5-98.1 82.5-54.98 0-90.5-26.2-107.88-60.54zm-209.13 5.13c9.3 16.5 17.76 30.45 37.91 30.45 19.35 0 31.5-7.59 31.5-37.1v-201.3h59.2v202.1c0 61.2-35.86 89-88.2 89-47.28 0-74.6-24.53-88.6-54z"/>
+          </svg>
+          <span class="lang-name-bg">JS</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#fffde7;">
+              <svg width="26" height="26" viewBox="0 0 630 630"><rect width="630" height="630" fill="#f7df1e" rx="4"/><path d="M423.2 492.19c12.69 20.72 29.2 35.95 58.4 35.95 24.53 0 40.2-12.26 40.2-29.2 0-20.3-16.1-27.49-43.1-39.3l-14.8-6.35c-42.72-18.2-71.1-41-71.1-89.2 0-44.4 33.83-78.2 86.7-78.2 37.64 0 64.7 13.1 84.2 47.4l-46.1 29.6c-10.15-18.2-21.1-25.37-38.1-25.37-17.34 0-28.33 11-28.33 25.37 0 17.76 11 24.95 36.4 35.95l14.8 6.34c50.3 21.57 78.7 43.56 78.7 93 0 53.3-41.87 82.5-98.1 82.5-54.98 0-90.5-26.2-107.88-60.54zm-209.13 5.13c9.3 16.5 17.76 30.45 37.91 30.45 19.35 0 31.5-7.59 31.5-37.1v-201.3h59.2v202.1c0 61.2-35.86 89-88.2 89-47.28 0-74.6-24.53-88.6-54z" fill="#323330"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>JavaScript</h3>
+              <div class="lang-type">Lenguaje de scripting web</div>
+            </div>
+          </div>
+          <p class="lang-desc">Agrega interactividad y lógica a las páginas web. Con JS podemos crear menús, animaciones, validar formularios, consumir APIs y construir aplicaciones completas.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">app.js</span>
+            </div>
+            <pre><span class="cm">// Función de saludo personalizado</span>
+<span class="kw">const</span> <span class="fn">saludar</span> = (<span class="prop">nombre</span>) <span class="kw">=></span> <span class="pun">{</span>
+  <span class="kw">const</span> hora = <span class="kw">new</span> <span class="fn">Date</span>().getHours();
+  <span class="kw">const</span> saludo = hora &lt; <span class="num">12</span>
+    ? <span class="str">"Buenos días"</span>
+    : <span class="str">"Buenas tardes"</span>;
+  <span class="kw">return</span> <span class="str">`${saludo}, ${nombre}!`</span>;
+<span class="pun">}</span>;
+
+console.<span class="fn">log</span>(<span class="fn">saludar</span>(<span class="str">"Perla"</span>));
+<span class="cm">// → "Buenas tardes, Perla!"</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Front-end</span><span class="tag">Back-end</span><span class="tag">Interactividad</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Python Web -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#3776ab,#ffd343);">
+          <svg width="80" height="80" viewBox="0 0 256 255" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="pyg1" x1="12%" y1="12%" x2="83%" y2="88%"><stop offset="0%" stop-color="#387EB8"/><stop offset="100%" stop-color="#366994"/></linearGradient><linearGradient id="pyg2" x1="19%" y1="20%" x2="90%" y2="88%"><stop offset="0%" stop-color="#FFE052"/><stop offset="100%" stop-color="#FFC331"/></linearGradient></defs>
+            <path d="M126.9 0C62.2 0 66 27.8 66 27.8l.1 28.8h62v8.6H41.1S0 60.2 0 125.6c0 65.4 36.2 63.1 36.2 63.1h21.6v-30.3s-1.2-36.2 35.6-36.2h61.4s34.4.6 34.4-33.3V34.7S194.3 0 126.9 0zM92.7 19.8c6.1 0 11.1 5 11.1 11.1s-5 11.1-11.1 11.1-11.1-5-11.1-11.1 5-11.1 11.1-11.1z" fill="url(#pyg1)"/>
+            <path d="M129.1 254.8c64.7 0 60.9-27.8 60.9-27.8l-.1-28.8h-62v-8.6h87.1s41.1 4.8 41.1-60.6c0-65.4-36.2-63.1-36.2-63.1h-21.6v30.3s1.2 36.2-35.6 36.2h-61.4s-34.4-.6-34.4 33.3v56.1s-5.2 33.1 62.2 33.1zm34.2-19.8c-6.1 0-11.1-5-11.1-11.1s5-11.1 11.1-11.1 11.1 5 11.1 11.1-5 11.1-11.1 11.1z" fill="url(#pyg2)"/>
+          </svg>
+          <span class="lang-name-bg">PY</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#f0f7ff;">
+              <svg width="26" height="26" viewBox="0 0 256 255"><defs><linearGradient id="pyg1s" x1="12%" y1="12%" x2="83%" y2="88%"><stop offset="0%" stop-color="#387EB8"/><stop offset="100%" stop-color="#366994"/></linearGradient><linearGradient id="pyg2s" x1="19%" y1="20%" x2="90%" y2="88%"><stop offset="0%" stop-color="#FFE052"/><stop offset="100%" stop-color="#FFC331"/></linearGradient></defs><path d="M126.9 0C62.2 0 66 27.8 66 27.8l.1 28.8h62v8.6H41.1S0 60.2 0 125.6c0 65.4 36.2 63.1 36.2 63.1h21.6v-30.3s-1.2-36.2 35.6-36.2h61.4s34.4.6 34.4-33.3V34.7S194.3 0 126.9 0zM92.7 19.8c6.1 0 11.1 5 11.1 11.1s-5 11.1-11.1 11.1-11.1-5-11.1-11.1 5-11.1 11.1-11.1z" fill="url(#pyg1s)"/><path d="M129.1 254.8c64.7 0 60.9-27.8 60.9-27.8l-.1-28.8h-62v-8.6h87.1s41.1 4.8 41.1-60.6c0-65.4-36.2-63.1-36.2-63.1h-21.6v30.3s1.2 36.2-35.6 36.2h-61.4s-34.4-.6-34.4 33.3v56.1s-5.2 33.1 62.2 33.1zm34.2-19.8c-6.1 0-11.1-5-11.1-11.1s5-11.1 11.1-11.1 11.1 5 11.1 11.1-5 11.1-11.1 11.1z" fill="url(#pyg2s)"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>Python</h3>
+              <div class="lang-type">Back-end & IA</div>
+            </div>
+          </div>
+          <p class="lang-desc">Uno de los lenguajes más populares del mundo. Se usa para back-end web (Django, Flask), ciencia de datos, inteligencia artificial y automatización. Su sintaxis es muy legible.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">main.py</span>
+            </div>
+            <pre><span class="cm"># Lista de lenguajes favoritos</span>
+<span class="prop">lenguajes</span> = [<span class="str">"Python"</span>, <span class="str">"JS"</span>, <span class="str">"CSS"</span>]
+
+<span class="kw">def</span> <span class="fn">describir</span>(<span class="prop">lang</span>):
+    <span class="kw">return</span> <span class="str">f"Aprendiendo {lang} 🚀"</span>
+
+<span class="kw">for</span> <span class="prop">l</span> <span class="kw">in</span> lenguajes:
+    <span class="fn">print</span>(<span class="fn">describir</span>(l))
+
+<span class="cm"># → Aprendiendo Python 🚀</span>
+<span class="cm"># → Aprendiendo JS 🚀</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Back-end</span><span class="tag">IA</span><span class="tag">Data Science</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHP -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#4f5b93,#787cb5);">
+          <svg width="100" height="54" viewBox="0 0 512 186" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="256" cy="93" rx="256" ry="93" fill="#6181b6"/>
+            <path d="M134 143l14-70H88l-14 70H51l28-141h23l-7 34h60l7-34h23l-28 141zM198 143l7-34 14-72h77c23 0 36 14 32 37-4 21-24 37-47 37h-42l-10 32h-31zm51-51h34c10 0 17-6 19-16 2-9-3-15-13-15h-34l-6 31zM342 143l7-34 14-72h77c23 0 36 14 32 37-4 21-24 37-47 37h-42l-10 32h-31zm51-51h34c10 0 17-6 19-16 2-9-3-15-13-15h-34l-6 31z" fill="white"/>
+          </svg>
+          <span class="lang-name-bg">PHP</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#eef0ff;">
+              <svg width="28" height="16" viewBox="0 0 512 186"><ellipse cx="256" cy="93" rx="256" ry="93" fill="#6181b6"/><path d="M134 143l14-70H88l-14 70H51l28-141h23l-7 34h60l7-34h23l-28 141zM198 143l7-34 14-72h77c23 0 36 14 32 37-4 21-24 37-47 37h-42l-10 32h-31zm51-51h34c10 0 17-6 19-16 2-9-3-15-15h-34l-6 31zM342 143l7-34 14-72h77c23 0 36 14 32 37-4 21-24 37-47 37h-42l-10 32h-31zm51-51h34c10 0 17-6 19-16 2-9-3-15-13-15h-34l-6 31z" fill="white"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>PHP</h3>
+              <div class="lang-type">Hypertext Preprocessor</div>
+            </div>
+          </div>
+          <p class="lang-desc">Lenguaje de servidor que impulsa el 77% de la web, incluyendo WordPress. Genera HTML dinámico, maneja bases de datos y sesiones de usuario. Es ideal para principiantes en back-end.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">index.php</span>
+            </div>
+            <pre><span class="cm">&lt;?php // Script de bienvenida</span>
+<span class="kw">$nombre</span> = <span class="str">"Perla"</span>;
+<span class="kw">$fecha</span>  = <span class="fn">date</span>(<span class="str">"d/m/Y"</span>);
+
+<span class="kw">function</span> <span class="fn">bienvenida</span>(<span class="kw">$user</span>) <span class="pun">{</span>
+  <span class="kw">return</span> <span class="str">"Hola, {$user}! 👋"</span>;
+<span class="pun">}</span>
+
+<span class="fn">echo</span> <span class="fn">bienvenida</span>(<span class="kw">$nombre</span>);
+<span class="fn">echo</span> <span class="str">"Hoy es: {$fecha}"</span>;
+<span class="cm">?&gt;</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Back-end</span><span class="tag">Servidor</span><span class="tag">WordPress</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TypeScript -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#007acc,#3178c6);">
+          <svg width="80" height="80" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="400" rx="20" fill="#3178c6"/>
+            <path d="M87 237v-22h131v22h-43v122H130V237zm155 103c7 4 18 8 29 8 12 0 18-5 18-12s-5-11-19-16c-19-7-31-17-31-34 0-19 16-34 42-34 13 0 22 3 29 6l-6 21c-5-2-12-6-23-6-11 0-16 5-16 11 0 7 6 10 21 16 20 8 30 18 30 35 0 19-14 35-45 35-13 0-26-3-34-8z" fill="white"/>
+          </svg>
+          <span class="lang-name-bg">TS</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#e8f4fd;">
+              <svg width="26" height="26" viewBox="0 0 400 400"><rect width="400" height="400" rx="6" fill="#3178c6"/><path d="M87 237v-22h131v22h-43v122H130V237zm155 103c7 4 18 8 29 8 12 0 18-5 18-12s-5-11-19-16c-19-7-31-17-31-34 0-19 16-34 42-34 13 0 22 3 29 6l-6 21c-5-2-12-6-23-6-11 0-16 5-16 11 0 7 6 10 21 16 20 8 30 18 30 35 0 19-14 35-45 35-13 0-26-3-34-8z" fill="white"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>TypeScript</h3>
+              <div class="lang-type">JavaScript con tipado</div>
+            </div>
+          </div>
+          <p class="lang-desc">Superconjunto de JavaScript creado por Microsoft que añade tipos estáticos. Hace el código más seguro y predecible. Muy usado en proyectos grandes con React o Angular.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">usuario.ts</span>
+            </div>
+            <pre><span class="cm">// Interface tipada</span>
+<span class="kw">interface</span> <span class="fn">Usuario</span> <span class="pun">{</span>
+  <span class="prop">nombre</span>: <span class="kw">string</span>;
+  <span class="prop">edad</span>:   <span class="kw">number</span>;
+  <span class="prop">activo</span>: <span class="kw">boolean</span>;
+<span class="pun">}</span>
+
+<span class="kw">const</span> <span class="prop">alumna</span>: <span class="fn">Usuario</span> = <span class="pun">{</span>
+  <span class="prop">nombre</span>: <span class="str">"Perla De Coss"</span>,
+  <span class="prop">edad</span>:   <span class="num">17</span>,
+  <span class="prop">activo</span>: <span class="kw">true</span>,
+<span class="pun">}</span>;</pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Front-end</span><span class="tag">Tipado</span><span class="tag">React/Angular</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /lang-grid web -->
+  </div><!-- /web -->
+
+  <!-- ══════════════════════════════
+       SECCIÓN 2: ESCRITORIO
+  ══════════════════════════════ -->
+  <div id="desk">
+    <div class="cat-header cat-desk" style="margin-top:70px;">
+      <div class="cat-dot" style="background:#ffb347"></div>
+      <h2>🖥️ Lenguajes de <span style="color:#ffb347">Escritorio</span></h2>
+    </div>
+    <p class="cat-desc">
+      Se usan para construir aplicaciones que se instalan directamente en tu computadora: editores de texto, juegos, software de diseño, sistemas operativos. Generalmente son lenguajes de más bajo nivel y alto rendimiento.
+    </p>
+
+    <div class="lang-grid">
+
+      <!-- Java -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#e76f00,#f89820);">
+          <svg width="65" height="90" viewBox="0 0 55 80" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 53.3s-3.1 1.8 2.2 2.4c6.4.7 9.7.6 16.7-.7 0 0 1.9 1.1 4.4 2.1-15.6 6.7-35.4-.4-23.3-3.8zm-1.9-8.6s-3.4 2.5 1.8 3c6.8.7 12.1.8 21.4-.9 0 0 1.3 1.3 3.3 2-18.9 5.5-40-.5-26.5-4.1z" fill="#5382a1"/>
+            <path d="M30.3 26.5c3.9 4.5-1 8.5-1 8.5s9.7-5 5.3-11.3c-4.2-5.9-7.4-8.8 10-18.8 0 0-27.3 6.8-14.3 21.6z" fill="#e76f00"/>
+            <path d="M43.3 61.4s2.3 1.9-2.5 3.4c-9.2 2.8-38.3 3.6-46.4.1-2.9-1.3 2.5-3 4.2-3.4 1.8-.4 2.8-.3 2.8-.3-3.2-2.3-20.7 4.4-8.9 6.3 32.2 5.2 58.7-2.3 50.8-6.1zm-24-17.3s-14.6 3.5-5.2 4.7c4 .5 11.9.4 19.3-.2 6-.5 12.1-1.6 12.1-1.6s-2.1.9-3.7 1.9c-14.8 3.9-43.4 2.1-35.2-1.8 6.9-3.4 12.7-2.9 12.7-2.9zm26.1 14.6c15.1-7.8 8.1-15.4 3.2-14.4-1.2.2-1.7.5-1.7.5s.4-.7 1.3-1c9.8-3.4 17.4 10.2-3.1 15.6 0-.1.2-.4.3-.7z" fill="#5382a1"/>
+            <path d="M34.1 0S41.6 7.5 27 19.1c-11.7 9.2-2.7 14.5 0 20.5-6.8-6.2-11.8-11.6-8.5-16.7C23.5 15.3 36.9 12 34.1 0z" fill="#e76f00"/>
+            <path d="M21.1 72.7c14.5 .9 36.8-.5 37.3-7.2 0 0-1 2.6-12 4.6-12.4 2.3-27.7 2-36.8.6 0 0 1.9 1.5 11.5 2z" fill="#5382a1"/>
+          </svg>
+          <span class="lang-name-bg">Java</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#fff3e0;">
+              <svg width="22" height="30" viewBox="0 0 55 80"><path d="M19 53.3s-3.1 1.8 2.2 2.4c6.4.7 9.7.6 16.7-.7 0 0 1.9 1.1 4.4 2.1-15.6 6.7-35.4-.4-23.3-3.8zm-1.9-8.6s-3.4 2.5 1.8 3c6.8.7 12.1.8 21.4-.9 0 0 1.3 1.3 3.3 2-18.9 5.5-40-.5-26.5-4.1z" fill="#5382a1"/><path d="M30.3 26.5c3.9 4.5-1 8.5-1 8.5s9.7-5 5.3-11.3c-4.2-5.9-7.4-8.8 10-18.8 0 0-27.3 6.8-14.3 21.6z" fill="#e76f00"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>Java</h3>
+              <div class="lang-type">Orientado a objetos</div>
+            </div>
+          </div>
+          <p class="lang-desc">"Write once, run anywhere". Java se ejecuta en la JVM (máquina virtual), lo que lo hace multiplataforma. Es el lenguaje base de Android y miles de aplicaciones empresariales.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">Hola.java</span>
+            </div>
+            <pre><span class="cm">// Clase principal en Java</span>
+<span class="kw">public class</span> <span class="fn">Hola</span> <span class="pun">{</span>
+  <span class="kw">public static void</span> <span class="fn">main</span>
+      (String[] args) <span class="pun">{</span>
+
+    String <span class="prop">nombre</span> = <span class="str">"Perla"</span>;
+    <span class="fn">System.out.println</span>(
+      <span class="str">"Hola, "</span> + <span class="prop">nombre</span>
+    );
+  <span class="pun">}</span>
+<span class="pun">}</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">POO</span><span class="tag">Android</span><span class="tag">Multiplataforma</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C# -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#512bd4,#9b4dca);">
+          <svg width="80" height="80" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+            <path d="M117.5 33.5l.3-.2c-.6-1.1-1.5-2.1-2.4-2.6L64.3 2.9c-.9-.5-2.4-.5-3.4 0L9.6 30.8C8.6 31.3 7.8 32.8 7.8 34v55.7c0 1.3.8 2.7 1.8 3.3l51.3 27.9c.9.5 2.4.5 3.3 0l51.3-27.9c1-.6 1.8-2 1.8-3.3V34c-.1-.6-.3-1.2-.8-1.7l.3 1.2z" fill="#a179dc"/>
+            <path d="M117.8 33.3l.2-.3c-.1-.4-.4-.8-.7-1.1L64.3 4c-.9-.5-2.4-.5-3.3 0L9.6 30.9c-1 .6-1.8 2-1.8 3.3v55.7c0 .8.3 1.6.8 2.2l1.2-1.1V34.2c0-1.3.8-2.7 1.8-3.3l51.3-27.9c.9-.5 2.4-.5 3.3 0l51.3 27.9c.3.2.6.5.8.8l1.5 1.6z" fill="#a179dc"/>
+            <path d="M64 8.9L12.7 37.6v50.8L64 117.1l51.3-28.7V37.6L64 8.9zM64 103l-39.3-22V47l39.3-22 39.3 22v34L64 103z" fill="white"/>
+            <path d="M84.3 75.8c-2.8 4.8-8 8-13.9 8-8.8 0-16-7.1-16-16s7.1-16 16-16c5.9 0 11.1 3.2 13.9 8l13.7-7.9c-5.2-9-14.9-15.1-26.6-15.1-16.5 0-30 13.4-30 30s13.4 30 30 30c11.6 0 21.4-6.1 26.6-15.1l-13.7-7.9z" fill="white"/>
+            <path d="M96 65.8H93v-3h-3v3h-3v3h3v3h3v-3h3zM105 65.8h-3v-3h-3v3h-3v3h3v3h3v-3h3z" fill="white"/>
+          </svg>
+          <span class="lang-name-bg">C#</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#f3eeff;">
+              <svg width="26" height="26" viewBox="0 0 128 128"><path d="M117.5 33.5l.3-.2c-.6-1.1-1.5-2.1-2.4-2.6L64.3 2.9c-.9-.5-2.4-.5-3.4 0L9.6 30.8C8.6 31.3 7.8 32.8 7.8 34v55.7c0 1.3.8 2.7 1.8 3.3l51.3 27.9c.9.5 2.4.5 3.3 0l51.3-27.9c1-.6 1.8-2 1.8-3.3V34c-.1-.6-.3-1.2-.8-1.7l.3 1.2z" fill="#a179dc"/><path d="M64 8.9L12.7 37.6v50.8L64 117.1l51.3-28.7V37.6L64 8.9zM64 103l-39.3-22V47l39.3-22 39.3 22v34L64 103z" fill="#512bd4"/><path d="M84.3 75.8c-2.8 4.8-8 8-13.9 8-8.8 0-16-7.1-16-16s7.1-16 16-16c5.9 0 11.1 3.2 13.9 8l13.7-7.9c-5.2-9-14.9-15.1-26.6-15.1-16.5 0-30 13.4-30 30s13.4 30 30 30c11.6 0 21.4-6.1 26.6-15.1l-13.7-7.9z" fill="#512bd4"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>C# (C Sharp)</h3>
+              <div class="lang-type">Microsoft · .NET</div>
+            </div>
+          </div>
+          <p class="lang-desc">Lenguaje de Microsoft para aplicaciones Windows, videojuegos (Unity) y servicios web con .NET. Combina la potencia de C++ con la simplicidad de Java.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">Programa.cs</span>
+            </div>
+            <pre><span class="cm">// Clase en C#</span>
+<span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="fn">Alumna</span> <span class="pun">{</span>
+  <span class="kw">public string</span> <span class="prop">Nombre</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+
+  <span class="kw">public void</span> <span class="fn">Saludar</span>() <span class="pun">{</span>
+    Console.<span class="fn">WriteLine</span>(
+      <span class="str">$"Hola, {Nombre}!"</span>);
+  <span class="pun">}</span>
+<span class="pun">}</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Unity</span><span class="tag">Windows</span><span class="tag">.NET</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- C++ -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#00427e,#0073b7);">
+          <svg width="80" height="80" viewBox="0 0 306 344" xmlns="http://www.w3.org/2000/svg">
+            <path d="M302.1 258.8L160.5 340.8c-4.6 2.7-10.5 2.7-15.1 0L3.9 258.8C-.7 256.2-2 252 .9 249.4l14.3-12.5 128.2 74.1c4.6 2.7 10.5 2.7 15.1 0l128.2-74.1 14.3 12.5c2.9 2.7 1.6 6.9-2.9 9.4z" fill="#659AD2"/>
+            <path d="M302.1 85.3L290 74.4 153 155.2 16 74.4 3.9 85.3C-.7 88-.7 93 3.9 95.7L153 177.2l149.1-81.5c4.6-2.7 4.6-7.7 0-10.4z" fill="#00589D"/>
+            <path d="M153 0L3.9 81.5c-4.6 2.7-4.6 7.7 0 10.4L153 173.4l149.1-81.5c4.6-2.7 4.6-7.7 0-10.4L153 0z" fill="#004482"/>
+            <path d="M153 173.4L3.9 255c-4.6 2.7-4.6 7.7 0 10.4L153 344l149.1-78.6c4.6-2.7 4.6-7.7 0-10.4L153 173.4z" fill="#00589D"/>
+            <text x="70" y="215" font-family="Arial" font-weight="bold" font-size="120" fill="white">C++</text>
+          </svg>
+          <span class="lang-name-bg">C++</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#e8f4fd;">
+              <span style="font-family:monospace;font-weight:900;color:#0073b7;font-size:1rem;">C++</span>
+            </div>
+            <div class="lang-header-text">
+              <h3>C++</h3>
+              <div class="lang-type">Bajo nivel · Alto rendimiento</div>
+            </div>
+          </div>
+          <p class="lang-desc">Extensión de C con orientación a objetos. Se usa en sistemas operativos, motores de videojuegos (Unreal), software embebido y aplicaciones que requieren máximo rendimiento.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">main.cpp</span>
+            </div>
+            <pre><span class="cm">// Programa básico en C++</span>
+<span class="fn">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> std;
+
+<span class="kw">int</span> <span class="fn">main</span>() <span class="pun">{</span>
+  string <span class="prop">alumna</span> = <span class="str">"Perla"</span>;
+  <span class="kw">int</span> <span class="prop">anio</span> = <span class="num">2025</span>;
+
+  cout &lt;&lt; <span class="str">"Hola, "</span> &lt;&lt; <span class="prop">alumna</span>
+       &lt;&lt; <span class="str">" - Año: "</span> &lt;&lt; <span class="prop">anio</span>;
+  <span class="kw">return</span> <span class="num">0</span>;
+<span class="pun">}</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Sistemas</span><span class="tag">Videojuegos</span><span class="tag">Unreal</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /lang-grid desk -->
+  </div><!-- /desk -->
+
+  <!-- ══════════════════════════════
+       SECCIÓN 3: DISEÑO Y MAQUETACIÓN
+  ══════════════════════════════ -->
+  <div id="design">
+    <div class="cat-header cat-design" style="margin-top:70px;">
+      <div class="cat-dot" style="background:#ff79c6"></div>
+      <h2>🎨 Lenguajes de <span style="color:#ff79c6">Diseño y Maquetación</span></h2>
+    </div>
+    <p class="cat-desc">
+      Más allá de la programación, existen lenguajes y herramientas especializadas en la presentación visual, la maquetación de documentos y el diseño de interfaces. Son la intersección entre el arte y el código.
+    </p>
+
+    <div class="lang-grid">
+
+      <!-- SASS/SCSS -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#bf4080,#cc6699);">
+          <svg width="80" height="60" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="38" fill="#bf4080"/>
+            <text x="10" y="55" font-family="Georgia,serif" font-weight="bold" font-size="42" fill="white">Sass</text>
+            <text x="90" y="58" font-family="Georgia,serif" font-style="italic" font-size="22" fill="rgba(255,255,255,.7)">CSS con superpoderes</text>
+          </svg>
+          <span class="lang-name-bg">SASS</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#fce4f0;">
+              <svg width="26" height="26" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="30" fill="#bf4080"/><path d="M32 10c4.5 0 8.5 1.5 11.8 4L19.3 41.8c-2.5-3.3-4-7.4-4-11.8C15.3 19.6 22.6 10 32 10zm0 44c-4.5 0-8.5-1.5-11.8-4L44.7 22.2c2.5 3.3 4 7.4 4 11.8C48.7 44.4 41.4 54 32 54z" fill="white"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>SASS / SCSS</h3>
+              <div class="lang-type">Preprocesador CSS</div>
+            </div>
+          </div>
+          <p class="lang-desc">Extiende CSS con variables, funciones, anidamiento y mixins. Permite escribir estilos más organizados y reutilizables. El código se "compila" a CSS estándar.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">estilos.scss</span>
+            </div>
+            <pre><span class="cm">// Variables en SASS</span>
+<span class="prop">$rosa</span>: <span class="val">#e91e8c</span>;
+<span class="prop">$lila</span>: <span class="val">#9c6bc4</span>;
+<span class="prop">$radio</span>: <span class="val">12px</span>;
+
+<span class="sel">.card</span> <span class="pun">{</span>
+  <span class="prop">border-radius</span>: <span class="val">$radio</span>;
+  <span class="prop">background</span>: <span class="val">$lila</span>;
+
+  <span class="sel">&amp;:hover</span> <span class="pun">{</span>
+    <span class="prop">background</span>: <span class="val">$rosa</span>;
+  <span class="pun">}</span>
+<span class="pun">}</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Preprocesador</span><span class="tag">Variables</span><span class="tag">Mixins</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SVG -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#ff6b35,#f7c59f);">
+          <svg width="90" height="70" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="30" fill="rgba(255,255,255,.3)" stroke="white" stroke-width="2"/>
+            <rect x="85" y="15" width="40" height="50" rx="8" fill="rgba(255,255,255,.25)" stroke="white" stroke-width="2"/>
+            <polygon points="155,10 190,40 155,70" fill="rgba(255,255,255,.2)" stroke="white" stroke-width="2"/>
+            <text x="8" y="75" font-family="monospace" font-weight="bold" font-size="11" fill="white">&lt;svg&gt; gráficos vectoriales&lt;/svg&gt;</text>
+          </svg>
+          <span class="lang-name-bg">SVG</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#fff3ee;">
+              <svg width="26" height="26" viewBox="0 0 100 100"><circle cx="30" cy="50" r="22" fill="#ff6b35" opacity=".7"/><rect x="52" y="28" width="40" height="44" rx="6" fill="#f7c59f" stroke="#ff6b35" stroke-width="2"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>SVG</h3>
+              <div class="lang-type">Scalable Vector Graphics</div>
+            </div>
+          </div>
+          <p class="lang-desc">Lenguaje XML para describir gráficos vectoriales. Los SVG se escalan sin perder calidad. Son ideales para íconos, logos, ilustraciones e infografías interactivas en la web.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">icono.svg</span>
+            </div>
+            <pre><span class="cm">&lt;!-- Corazón en SVG --&gt;</span>
+<span class="fn">&lt;svg</span> <span class="atr">viewBox</span>=<span class="str">"0 0 100 100"</span>
+     <span class="atr">xmlns</span>=<span class="str">"http://www.w3.org/2000/svg"</span><span class="fn">&gt;</span>
+
+  <span class="fn">&lt;path</span>
+    <span class="atr">d</span>=<span class="str">"M50 85 C20 65 5 45 5 30
+       C5 15 17 5 30 5
+       C39 5 47 10 50 17
+       C53 10 61 5 70 5
+       C83 5 95 15 95 30
+       C95 45 80 65 50 85Z"</span>
+    <span class="atr">fill</span>=<span class="str">"#e91e8c"</span><span class="fn">/&gt;</span>
+<span class="fn">&lt;/svg&gt;</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Vectorial</span><span class="tag">Íconos</span><span class="tag">Animaciones</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Markdown -->
+      <div class="lang-card">
+        <div class="lang-banner" style="background:linear-gradient(135deg,#24292e,#586069);">
+          <svg width="90" height="55" viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="640" height="400" rx="30" fill="#24292e"/>
+            <path d="M60 320V80h80l80 120 80-120h80v240h-80V200l-80 120-80-120v120zM480 320l-100-120h60V80h80v120h60z" fill="white"/>
+          </svg>
+          <span class="lang-name-bg">MD</span>
+        </div>
+        <div class="lang-body">
+          <div class="lang-header">
+            <div class="lang-icon-wrap" style="background:#f0f0f0;">
+              <svg width="26" height="16" viewBox="0 0 640 400"><rect width="640" height="400" rx="10" fill="#24292e"/><path d="M60 320V80h80l80 120 80-120h80v240h-80V200l-80 120-80-120v120zM480 320l-100-120h60V80h80v120h60z" fill="white"/></svg>
+            </div>
+            <div class="lang-header-text">
+              <h3>Markdown</h3>
+              <div class="lang-type">Lenguaje de marcado ligero</div>
+            </div>
+          </div>
+          <p class="lang-desc">Permite escribir texto con formato usando símbolos simples. Se usa en README de GitHub, documentación técnica, blogs y plataformas como Notion, Obsidian y Reddit.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dot r"></div><div class="code-dot y"></div><div class="code-dot g"></div>
+              <span class="code-fname">nota.md</span>
+            </div>
+            <pre><span class="cm"># Título Principal</span>
+
+<span class="str">## Subtítulo</span>
+
+Texto **negrita**, _cursiva_
+y ~~tachado~~.
+
+<span class="fn">- Elemento 1</span>
+<span class="fn">- Elemento 2</span>
+  <span class="fn">- Subelemento</span>
+
+<span class="kw">[Enlace](https://ejemplo.com)</span>
+
+<span class="prop">```python
+print("Hola")
+```</span></pre>
+          </div>
+          <div class="lang-tags">
+            <span class="tag">Documentación</span><span class="tag">GitHub</span><span class="tag">Blogs</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /lang-grid design -->
+  </div><!-- /design -->
+
+  <!-- TABLA COMPARATIVA + CONCLUSIÓN -->
+  <div class="divider">✦ Resumen Comparativo ✦</div>
+
+  <div class="summary-box">
+    <h3>✦ Comparativa General</h3>
+    <p>Cada lenguaje tiene un propósito y un ecosistema. Lo importante no es aprenderlos todos, sino entender cuándo y para qué usar cada uno. ¡La elección correcta del lenguaje puede ser la diferencia entre un proyecto exitoso y uno difícil!</p>
+
+    <div style="overflow-x:auto; margin-top:24px;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Lenguaje</th>
+            <th>Categoría</th>
+            <th>Dificultad</th>
+            <th>Uso Principal</th>
+            <th>Empresas que lo usan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#f7df1e">HTML5</strong></td>
+            <td>Web Front-end</td>
+            <td>⭐ Fácil</td>
+            <td>Estructura de páginas</td>
+            <td>Todas las empresas web</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#2965f1">CSS3</strong></td>
+            <td>Web Front-end</td>
+            <td>⭐⭐ Medio</td>
+            <td>Estilos y animaciones</td>
+            <td>Netflix, Apple, Google</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#f7df1e">JavaScript</strong></td>
+            <td>Web Full-stack</td>
+            <td>⭐⭐ Medio</td>
+            <td>Interactividad y apps</td>
+            <td>Facebook, Airbnb, Netflix</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#ffd343">Python</strong></td>
+            <td>Back-end / IA</td>
+            <td>⭐⭐ Medio</td>
+            <td>IA, datos, backend</td>
+            <td>Google, Instagram, NASA</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#787cb5">PHP</strong></td>
+            <td>Web Back-end</td>
+            <td>⭐⭐ Medio</td>
+            <td>Servidores y CMS</td>
+            <td>Facebook, WordPress</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#3178c6">TypeScript</strong></td>
+            <td>Web Front-end</td>
+            <td>⭐⭐⭐ Avanzado</td>
+            <td>Apps grandes tipadas</td>
+            <td>Microsoft, Slack, Airbnb</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#f89820">Java</strong></td>
+            <td>Escritorio / Android</td>
+            <td>⭐⭐⭐ Avanzado</td>
+            <td>Apps empresariales</td>
+            <td>Amazon, LinkedIn, Uber</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#a179dc">C#</strong></td>
+            <td>Escritorio / Juegos</td>
+            <td>⭐⭐⭐ Avanzado</td>
+            <td>Unity, Windows apps</td>
+            <td>Microsoft, Unity</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#659ad2">C++</strong></td>
+            <td>Sistemas / Juegos</td>
+            <td>⭐⭐⭐⭐ Difícil</td>
+            <td>Alto rendimiento</td>
+            <td>Adobe, EA, Valve</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#cc6699">SASS</strong></td>
+            <td>Diseño Web</td>
+            <td>⭐ Fácil</td>
+            <td>Estilos avanzados</td>
+            <td>Bootstrap, Angular</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#ff6b35">SVG</strong></td>
+            <td>Diseño Web</td>
+            <td>⭐⭐ Medio</td>
+            <td>Gráficos vectoriales</td>
+            <td>D3.js, Figma exports</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#aaa">Markdown</strong></td>
+            <td>Documentación</td>
+            <td>⭐ Fácil</td>
+            <td>Docs, blogs, READMEs</td>
+            <td>GitHub, Notion, Reddit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:24px;">
+      En el contexto de <strong style="color:var(--code-green)">Inteligencia Artificial</strong>, el lenguaje más relevante hoy en día es <strong>Python</strong>, ya que cuenta con las bibliotecas más potentes para IA: TensorFlow, PyTorch, Scikit-learn y NumPy. Sin embargo, conocer HTML, CSS y JavaScript nos permite presentar y visualizar los resultados de IA en la web.
+    </p>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">✦ Portafolio Digital · Tarea 02</div>
+  <div class="footer-grid">
+    <div class="footer-item">
+      <span class="fi-label">Escuela</span>
+      <span class="fi-value">Centro de Bachillerato Tecnológico Industrial y de Servicios 144</span>
+    </div>
+    <div class="footer-item">
+      <span class="fi-label">Especialidad</span>
+      <span class="fi-value">Inteligencia Artificial</span>
+    </div>
+    <div class="footer-item">
+      <span class="fi-label">Creadora</span>
+      <span class="fi-value">Perla De Coss</span>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">© 2025 · Cultura Digital 2 · Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
